@@ -20,6 +20,9 @@ class Body(BaseModel):
 
 @app.get('/')
 def root():
+    """
+    Returns the index.html file as a response.
+    """
     html_path = join(static_path, "index.html")
     return FileResponse(html_path)
 
@@ -28,8 +31,14 @@ def root():
 def generate(body: Body):
     """
     Generate a pseudo-random token ID of twenty characters by default.
-    Example POST request body:
 
+    Args:
+        body (Body): The request body containing the length of the token.
+
+    Returns:
+        dict: A dictionary containing the generated token.
+
+    Example POST request body:
     {
         "length": 20
     }
@@ -38,20 +47,22 @@ def generate(body: Body):
     return {'token': string}
 
 
-# Generate a Pydantic model called Token that has a single field called "token"
 class Token(BaseModel):
-
     token: str
 
 
-# Create a FastAPI endpoint that accepts a POST request with a JSON body 
-# containing a single field called "token" and returns a checksum of the text
 @app.post('/checksum')
 def checksum(token: Token):
     """
     Generate a checksum of the token.
-    Example POST request body:
 
+    Args:
+        token (Token): The request body containing the token.
+
+    Returns:
+        dict: A dictionary containing the checksum of the token.
+
+    Example POST request body:
     {
         "token": "<your_token_here>"
     }
